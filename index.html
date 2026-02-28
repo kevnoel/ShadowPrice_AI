@@ -191,11 +191,16 @@
 
       resultDiv.innerHTML = "<p class='loading'>Searching...</p>";
 
-      const res = await fetch("/run", {
+      const API_BASE = window.location.hostname.includes("github.io")
+        ? "https://shopping-assistant-32565067173.asia-southeast1.run.app"
+        : "";
+      
+      const res = await fetch(`${API_BASE}/run`, {
         method: "POST",
         headers: {"Content-Type": "application/x-www-form-urlencoded"},
         body: new URLSearchParams({ user_text: text })
       });
+
 
       const html = await res.text();
       resultDiv.innerHTML = html;

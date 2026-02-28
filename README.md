@@ -1,74 +1,118 @@
-# ShadowPrice_AI 🛒🤖  
-AI-Powered Smart Shopping Assistant with Budget Awareness
+# ShadowPrice_AI 🛒🤖
+### AI-Powered Budget-Aware Grocery Optimization System
 
-ShadowPrice_AI is an intelligent grocery assistant that converts natural language shopping requests into optimized purchase recommendations using real-time online prices and AI-based decision logic.
+ShadowPrice_AI is an intelligent retail assistant that transforms natural-language grocery requests into optimized purchase recommendations using real-time online price data and AI-driven decision logic.
 
-🔗 Live Deployments  
-- Google Cloud Run (API + Web UI):  
-  https://shopping-assistant-32565067173.asia-southeast1.run.app/
-
-- GitHub Pages (Project Page):  
-  https://kevnoel.github.io/ShadowPrice_AI/
+The system extracts structured shopping constraints (items, quantities, budget, currency, location), retrieves live Google Shopping listings, ranks viable candidates, and selects the best-value options while respecting user-defined budget constraints.
 
 ---
 
-## 🚀 What This Project Does
+## 🌍 Live Deployments
 
-ShadowPrice_AI solves a real problem:
+Cloud API + Web Interface:  
+https://shopping-assistant-32565067173.asia-southeast1.run.app/
 
-Consumers often don’t know which product gives the best value within their budget.
-
-This system:
-1. Extracts grocery items and constraints from natural language.
-2. Searches live Google Shopping listings.
-3. Uses AI (Gemini) to select the best-value product per item.
-4. Ensures selections respect the user’s budget when possible.
-5. Returns results in HTML or JSON format.
-
-Example input:
-> “I need 2 bags of rice and coffee under 50 ringgit in Malaysia”
+Project Page (GitHub Pages):  
+https://kevnoel.github.io/ShadowPrice_AI/
 
 ---
 
-## 🧠 How It Works (Pipeline)
+## 🎯 Problem Statement
 
-User Text  
+Consumers frequently struggle with:
+- Fragmented pricing across retailers  
+- Difficulty identifying best value per unit  
+- Budget limitations without clear price comparison  
+- Rapid price fluctuations  
+
+ShadowPrice_AI addresses this by combining structured AI extraction, real-time shopping search, and value-based optimization logic into a single automated pipeline.
+
+---
+
+## ⚙️ System Architecture
+
+User Input (Natural Language)  
 ⬇  
-Gemini Structured Extraction (items, quantity, budget, currency, location)  
+Gemini Structured Extraction  
 ⬇  
-SerpApi Google Shopping Search  
+SerpApi Google Shopping Retrieval  
 ⬇  
-Candidate Data Processing (pandas ranking + cleaning)  
+Candidate Cleaning & Ranking (Pandas)  
 ⬇  
-Gemini Best-Option Selection  
+AI-Based Best-Value Selection  
 ⬇  
-Final Optimized Cart Output  
+Optimized Cart Output (HTML / JSON)
+
+---
+
+## 🧠 Core Capabilities
+
+- Natural-language grocery interpretation  
+- Automatic extraction of items, quantities, and constraints  
+- Real-time Google Shopping search  
+- AI-assisted best-option selection  
+- Budget-aware filtering logic  
+- Structured JSON API for integration  
+- Web-based result visualization  
+- Docker-ready cloud deployment  
 
 ---
 
 ## 📂 Project Structure
+
 ```
-.
-├── scrap_data.py        # FastAPI server + endpoints
-├── AI_model.py          # Gemini extraction & decision logic
-├── functions.py         # SerpApi search + dataframe utilities
-├── index.html           # Simple frontend UI
-├── requirements.txt     # Python dependencies
-├── dockerfile           # Docker container config
+├── scrap_data.py # FastAPI application & API routes
+├── AI_model.py # Gemini extraction + selection logic
+├── functions.py # Shopping search + data processing utilities
+├── index.html # Frontend interface
+├── requirements.txt # Python dependencies
+├── dockerfile # Container configuration
 ```
+
+
 
 ---
+## 🛠 Technology Stack
 
-## 🛠 Tech Stack
-
+Backend:
 - FastAPI
-- Google Gemini API
-- SerpApi (Google Shopping API)
-- Pandas
 - Uvicorn
+
+Artificial Intelligence:
+- Google Gemini API
+
+Data Retrieval:
+- SerpApi (Google Shopping API)
+
+Data Processing:
+- Pandas
+
+Deployment:
 - Docker
+- Google Cloud Run
 
 ---
+
+## 🔌 API Endpoints
+
+GET `/`  
+Serves the web interface.
+
+POST `/run`  
+Returns formatted HTML results.
+
+POST `/run-json`  
+Returns structured JSON response:
+
+```json
+{
+  "selected": [...],
+  "total": 47.50,
+  "constraints": {...},
+  "candidates": [...],
+  "ai_summary": "..."
+}
+```
 
 ## 💻 Local Setup
 
@@ -116,4 +160,18 @@ https://shopping-assistant-32565067173.asia-southeast1.run.app/
 
 ---
 
+
+🚀 Future Improvements
+
+Knapsack-based full budget optimization
+
+Caching layer for repeated searches using firebase
+
+Multi-store comparison engine
+
+Currency auto-detection
+
+Mobile application integration
+
+Inflation and affordability analytics dashboard
 

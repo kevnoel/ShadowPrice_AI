@@ -47,3 +47,75 @@ Final Optimized Cart Output
 ---
 
 ## 📂 Project Structure
+```
+.
+├── scrap_data.py        # FastAPI server + endpoints
+├── AI_model.py          # Gemini extraction & decision logic
+├── functions.py         # SerpApi search + dataframe utilities
+├── index.html           # Simple frontend UI
+├── requirements.txt     # Python dependencies
+├── dockerfile           # Docker container config
+```
+
+---
+
+## 🛠 Tech Stack
+
+- FastAPI
+- Google Gemini API
+- SerpApi (Google Shopping API)
+- Pandas
+- Uvicorn
+- Docker
+
+---
+
+## 💻 Local Setup
+
+### 1. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Set environment variables
+
+Windows (PowerShell):
+
+```powershell
+$env:GEMINI_API_KEY="YOUR_KEY"
+$env:serpapi_shopping_api="YOUR_KEY"
+```
+
+Mac/Linux:
+
+```bash
+export GEMINI_API_KEY="YOUR_KEY"
+export serpapi_shopping_api="YOUR_KEY"
+```
+
+### 3. Run the app
+
+```bash
+uvicorn scrap_data:app --reload --host 0.0.0.0 --port 8000
+```
+
+Open:
+
+```
+http://127.0.0.1:8000
+```
+
+---
+
+## ☁ Cloud Deployment
+
+Deployed on Google Cloud Run:
+
+https://shopping-assistant-32565067173.asia-southeast1.run.app/
+
+---
+
+## 📜 License
+
+MIT License

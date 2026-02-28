@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Shopping Assistant</title>
+  <style>
+  :root{
+    --bg: #0b1220;
+    --card: rgba(255,255,255,0.07);
+    --text: #e8eefc;                 /* FIXED: visible text */
+    --muted: rgba(232, 238, 252, 0.6);
+    --border: rgba(255,255,255,0.14);
+    --shadow: 0 18px 60px rgba(0,0,0,0.45);
+    --accent: #6aa9ff;
+    --accent2: #8b5cf6;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+
+  body{
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(1200px 800px at 15% 10%, rgba(106,169,255,0.22), transparent 60%),
+      radial-gradient(1000px 700px at 85% 20%, rgba(139,92,246,0.22), transparent 55%),
+      linear-gradient(180deg, #070b14 0%, #0b1220 100%);
+    display: grid;
+    place-items: center;
+    padding: 28px 18px;
+  }
+
+  .container{
+    width: min(980px, 100%);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+  }
+
+  h3, h2{
+    margin: 0 0 14px 0;
+    font-size: 26px;
+    letter-spacing: 0.2px;
+  }
+
+  textarea{
+    width: 100%;
+    padding: 14px;
+    color: var(--text);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    outline: none;
+    transition: 180ms ease;
+    line-height: 1.45;
+    font-size: 15px;
+    resize: vertical;
+    min-height: 110px;
+  }
+
+  textarea::placeholder{
+    color: rgba(232,238,252,0.5);
+  }
+
+  textarea:focus{
+    border-color: rgba(106,169,255,0.6);
+    box-shadow: 0 0 0 6px rgba(106,169,255,0.14);
+    background: rgba(255,255,255,0.08);
+  }
+
+  button{
+    margin-top: 12px;
+    border: 0;
+    border-radius: 14px;
+    padding: 12px 18px;
+    color: #081022;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 100%);
+    box-shadow: 0 14px 30px rgba(106,169,255,0.25);
+    transition: transform 120ms ease, box-shadow 160ms ease, filter 160ms ease;
+  }
+
+  button:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 18px 40px rgba(106,169,255,0.30);
+    filter: brightness(1.03);
+  }
+
+  button:active{
+    transform: translateY(0px) scale(0.99);
+  }
+
+  #result{
+    margin-top: 18px;
+    padding: 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: auto;
+  }
+
+  .loading{
+    color: var(--muted);
+    margin: 0;
+    font-weight: 700;
+  }
+
+  pre{
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 0;
+    padding: 14px;
+    border-radius: 14px;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(232, 238, 252, 0.92);
+  }
+
+  table{
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  thead th{
+    text-align: left;
+    font-size: 12px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: rgba(232, 238, 252, 0.85);
+    background: rgba(255,255,255,0.07);
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(10px);
+  }
+
+  tbody td{
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.09);
+    color: rgba(232, 238, 252, 0.92);
+    font-size: 14px;
+  }
+
+  tbody tr:nth-child(even){
+    background: rgba(255,255,255,0.04);
+  }
+
+  tbody tr:hover{
+    background: rgba(106,169,255,0.10);
+  }
+
+  a{
+    color: var(--accent);
+    font-weight: 800;
+    text-decoration: none;
+  }
+  a:hover{ text-decoration: underline; }
+
+  @media (max-width: 620px){
+    h3,h2{ font-size: 20px; }
+    button{ width: 100%; }
+  }
+</style>
+</head>
+
+<body>
+
+  <h2>🛒 Smart Shopping Assistant</h2>
+
+  <textarea id="prompt" rows="4"
+    placeholder="Example: I need 2 bags of rice and coffee beans under 50 ringgit in Malaysia">
+  </textarea>
+
+  <br><br>
+  <button onclick="send()">Search</button>
+
+  <div id="result"></div>
+
+  <script>
+    async function send() {
+      const text = document.getElementById("prompt").value;
+      const resultDiv = document.getElementById("result");
+
+      resultDiv.innerHTML = "<p class='loading'>Searching...</p>";
+
+      const res = await fetch("/run", {
+        method: "POST",
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: new URLSearchParams({ user_text: text })
+      });
+
+      const html = await res.text();
+      resultDiv.innerHTML = html;
+    }
+  </script>
+
+</body>
+</html>

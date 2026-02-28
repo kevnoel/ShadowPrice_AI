@@ -175,3 +175,7 @@ Mobile application integration
 
 Inflation and affordability analytics dashboard
 
+
+## 📜 License
+
+MIT License

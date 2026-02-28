@@ -116,6 +116,4 @@ https://shopping-assistant-32565067173.asia-southeast1.run.app/
 
 ---
 
-## 📜 License
 
-MIT License
